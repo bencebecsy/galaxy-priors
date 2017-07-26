@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #-------------------------------------------------------------------------------
 #
 # Code to generate a prior distribution to GW skymaps based on the distribution
