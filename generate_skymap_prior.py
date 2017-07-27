@@ -61,7 +61,7 @@ h_filt = h[dist>dist_min]
 k_filt = k[dist>dist_min]
 
 #distance<25 Mpc
-dist_max = 25.0
+dist_max = 50.0
 ra_filt2 = ra_filt[dist_filt<dist_max]
 dec_filt2 = dec_filt[dist_filt<dist_max]
 dist_filt2 = dist_filt[dist_filt<dist_max]
