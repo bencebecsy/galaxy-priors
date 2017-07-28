@@ -28,7 +28,7 @@ with open("GLADE_2.txt", 'r') as glade_file:
         #if (L[8]<0.0):
         #if (L[13]>60.0):
         #if (L[15]>60.0):
-        if (L[8]>0.0 and L[8]<100.0):
+        if (L[8]>0.0 and L[8]<50.0):
         #if True:
             glade += L
             num += 1
