@@ -1,10 +1,14 @@
 #!/usr/bin/python
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 
 DPI=300
 
-glade=np.load("gx_list_glade.npy")
+with open("gx_list_glade.json", 'r') as json_file:
+    glade = json.load(json_file)
+    
+glade = np.array(glade)
 
 #filter
 filt = range(glade.shape[0])
