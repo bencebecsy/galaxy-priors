@@ -1,14 +1,12 @@
 #!/usr/bin/python
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import json
 
 DPI=300
 
-with open("gx_list_glade.json", 'r') as json_file:
-    glade = json.load(json_file)
-    
-glade = np.array(glade)
+glade = np.load("gx_list_glade.npy")
 
 #filter
 filt = range(glade.shape[0])
@@ -42,7 +40,7 @@ plt.hist(dist, bins=100)
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(dist), np.sqrt(np.mean(dist**2)), dist.size))
 plt.xlabel("Distance [Mpc]")
 plt.ylabel("#")
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_dist_linlog.png', dpi=DPI)
 
 #log-log plot
@@ -52,7 +50,7 @@ plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(dist), np.sqrt(np.
 plt.xlabel("Distance [Mpc]")
 plt.ylabel("#")
 plt.gca().set_xscale('log')
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_dist_loglog.png', dpi=DPI)
 
 plt.figure(8)
@@ -60,7 +58,7 @@ plt.hist(dist, bins=100, range=(dist.min(),100.0))
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(dist), np.sqrt(np.mean(dist**2)), dist.size))
 plt.xlabel("Distance [Mpc]")
 plt.ylabel("#")
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_dist_linlog_zoom.png', dpi=DPI)
 
 #################################
@@ -86,7 +84,7 @@ plt.hist(dec, bins=100)
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(dec), np.sqrt(np.mean(dec**2)), dec.size))
 plt.xlabel("Dec [deg]")
 plt.ylabel("#")
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_dec.png', dpi=DPI)
 
 #################################
@@ -99,7 +97,7 @@ plt.hist(b, bins=100)
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(b), np.sqrt(np.mean(b**2)), b.size))
 plt.xlabel("Apparent B magnitude")
 plt.ylabel("#")
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_b.png', dpi=DPI)
 
 #################################
@@ -112,7 +110,7 @@ plt.hist(j, bins=100)
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(j), np.sqrt(np.mean(j**2)), j.size))
 plt.xlabel("Apparent J magnitude")
 plt.ylabel("#")
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_j.png', dpi=DPI)
 
 #################################
@@ -125,7 +123,7 @@ plt.hist(h, bins=100)
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(h), np.sqrt(np.mean(h**2)), h.size))
 plt.xlabel("Apparent H magnitude")
 plt.ylabel("#")
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_h.png', dpi=DPI)
 
 #################################
@@ -138,5 +136,5 @@ plt.hist(k, bins=100)
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(k), np.sqrt(np.mean(k**2)), k.size))
 plt.xlabel("Apparent K magnitude")
 plt.ylabel("#")
-plt.gca().set_yscale('log')
+plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_k.png', dpi=DPI)
