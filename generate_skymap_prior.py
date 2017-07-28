@@ -7,12 +7,17 @@
 #-------------------------------------------------------------------------------
 import numpy as np
 import healpy as hp
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from timeit import default_timer as timer
+import sys
+
+infile, outfile = sys.argv[1:3]
 
 start = timer()
 
-NSIDE = 64
+NSIDE = int(sys.argv[3])
 DPI = 100
 print "Number of pixels used: %d" %hp.nside2npix(NSIDE)
 
@@ -31,18 +36,18 @@ alpha_K = 0.0
 skip_first_n = 0
 limit=-1
 
-glade=np.load("gx_list_glade.npy")
+glade=np.load(infile)
 #print glade[skip_first_n:limit]
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++Need to check the conventions for coordinates!!!
-ra = glade[skip_first_n:limit,0]*np.pi/180.0 #in radians
-dec = glade[skip_first_n:limit,1]*np.pi/180.0 #in radians
-dist = glade[skip_first_n:limit,2]
+ra = glade[skip_first_n:limit,6].astype(float)*np.pi/180.0 #in radians
+dec = glade[skip_first_n:limit,7].astype(float)*np.pi/180.0 #in radians
+dist = glade[skip_first_n:limit,8].astype(float)
 dphi = np.ones(ra.size)*1*np.pi/180.0 #+++++++++++++++Just a placeholder. Need to calculate this from some GLADE data.
-b = glade[skip_first_n:limit,3]
-j = glade[skip_first_n:limit,4]
-h = glade[skip_first_n:limit,5]
-k = glade[skip_first_n:limit,6]
+b = glade[skip_first_n:limit,11].astype(float)
+j = glade[skip_first_n:limit,13].astype(float)
+h = glade[skip_first_n:limit,15].astype(float)
+k = glade[skip_first_n:limit,17].astype(float)
 #print ra, dec, dphi
 print dist.size
 
@@ -100,7 +105,6 @@ print dist.size
 sum_pix = 0
 m=np.zeros(hp.nside2npix(NSIDE))
 for i in range(ra.size): #maybe do this in numpy as well
-    print i
     Phi = ra[i] #removed negative sign, because it seems like there's no need for it
     Theta = np.pi/2-dec[i]
     Dphi = dphi[i]
@@ -119,6 +123,8 @@ for i in range(ra.size): #maybe do this in numpy as well
     #print val
     m += val
     sum_pix += np.sum(val)
+    if i%1000==0:
+        print i
 
 #-------------------------------------------------------------------------------
 #normalization
@@ -130,7 +136,7 @@ print "Normalization: %r" %(np.sum(m)*4*np.pi/hp.nside2npix(NSIDE))
 #-------------------------------------------------------------------------------
 #saving
 #-------------------------------------------------------------------------------
-hp.write_map("skymap_prior.fits",m)
+hp.write_map(outfile,m)
 
 end = timer()
 print "Elapsed time: %r seconds" %(end-start)
