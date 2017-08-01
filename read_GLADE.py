@@ -24,11 +24,13 @@ with open("GLADE_2.txt", 'r') as glade_file:
         #        (20) flag3 0: measured B mag 1: ML estimated B mag (21) B_err_min (22) B_err_max
         #        (23) flag4 0: z from measured dist 1: ML estimated z (24) z_err_min (25) z_err_max
         L = L[0:6] + [float(i) for i in L[6:19]] + [int(L[19])] + [int(L[20])] + [float(L[21])] + [float(L[22])] + [int(L[23])] + [float(L[24])] + [float(L[25])]
+        #print L
         #if (L[11]<5.0):
         #if (L[8]<0.0):
         #if (L[13]>60.0):
         #if (L[15]>60.0):
-        if (L[8]>0.0 and L[8]<50.0):
+        #if (L[8]>0.0 and L[8]<50.0):
+        if (str(L[0])!='nan'):
         #if True:
             glade += L
             num += 1
