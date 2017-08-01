@@ -45,14 +45,17 @@ out_diff = open(outfile_diff, 'w')
 
 with open(targeting_file) as targ_file:
     #skyID  theta   DEC     step   phi     R.A    step  probability    cumulative
-    lines = targ_file.readlines()[68:-158]
+    #ending = -158
+    ending = -159
+    lines = targ_file.readlines()[68:ending]
+    print lines
     for i, line in enumerate(lines):
         l = np.array(line.strip().split()).astype(float)
         ra_cent = l[5]
         ra_step = l[6]
         dec_cent = l[2]
         dec_step = l[3]
-
+        
         mask = (ra>ra_cent-ra_step/2)*(ra<ra_cent+ra_step/2)*(dec>dec_cent-dec_step/2)*(dec<dec_cent+dec_step/2)
         if name1[mask].size!=0:
             out.write("--------------------------------------------------------\n")
