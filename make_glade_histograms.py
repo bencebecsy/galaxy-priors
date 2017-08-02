@@ -45,7 +45,7 @@ plt.xlabel("Distance [Mpc]")
 plt.ylabel("#")
 plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_dist_linlog.png', dpi=DPI)
-"""
+
 #log-log plot
 plt.figure(7)
 plt.hist(dist, bins=np.logspace(0 ,np.log10(np.amax(dist)), 100))
@@ -55,7 +55,7 @@ plt.ylabel("#")
 plt.gca().set_xscale('log')
 plt.gca().set_yscale('log', nonposy='clip')
 plt.savefig('glade_hist_dist_loglog.png', dpi=DPI)
-"""
+
 plt.figure(8)
 plt.hist(dist, bins=100, range=(dist.min(),100.0))
 plt.title("Mean=%.3f, RMS=%.3f, Number of points=%d"%(np.mean(dist), np.sqrt(np.mean(dist**2)), dist.size))
