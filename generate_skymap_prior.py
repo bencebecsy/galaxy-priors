@@ -24,11 +24,18 @@ print "Number of pixels used: %d" %hp.nside2npix(NSIDE)
 #-------------------------------------------------------------------------------
 #specify magnitude weight exponents
 #-------------------------------------------------------------------------------
-alpha_B = 6.0
-alpha_J = 0.0
-alpha_H = 0.0
-alpha_K = 0.0
-#should read from a config file later
+config_file = "weighting.conf"
+
+with open(config_file) as cf:
+    line = cf.readline().split()
+    weighting_mode = line[0]
+    alpha_B = float(line[1])
+    alpha_J = float(line[2])
+    alpha_H = float(line[3])
+    alpha_K = float(line[4])
+    print "Using weighting mode %s with B J H K exponents of %f %f %f %f."%(weighting_mode, alpha_B, alpha_J, alpha_H, alpha_K)
+
+#somehow we should try to write all info about our prior into the header of the fits file
 
 #-------------------------------------------------------------------------------
 #read in galaxy data
@@ -49,12 +56,13 @@ j = glade[skip_first_n:limit,13].astype(float)
 h = glade[skip_first_n:limit,15].astype(float)
 k = glade[skip_first_n:limit,17].astype(float)
 #print ra, dec, dphi
-print dist.size
+print "Number of galaxies: %d"%dist.size
 
 #-------------------------------------------------------------------------------
 #filtering the catalog
 #-------------------------------------------------------------------------------
 #distance>0 (maybe we should exclude very closeby ones as well)
+"""
 dist_min = 0.0
 ra_filt = ra[dist>dist_min]
 dec_filt = dec[dist>dist_min]
@@ -96,9 +104,9 @@ b = b_filt3
 j = j_filt3
 h = h_filt3
 k = k_filt3
+"""
 
-
-print dist.size
+#print dist.size
 #-------------------------------------------------------------------------------
 #add galaxies to the map
 #-------------------------------------------------------------------------------
@@ -117,7 +125,14 @@ for i in range(ra.size): #maybe do this in numpy as well
     pixels_vector = hp.pix2vec(NSIDE,range(hp.nside2npix(NSIDE)))
     gal_vector = hp.ang2vec(Theta, Phi)
     angle = np.arccos(np.dot(gal_vector,pixels_vector))    
-    weight = (-B)**alpha_B * (-J)**alpha_J * (-H)**alpha_H * (-K)**alpha_K #power law weights
+    if weighting_mode=='mag':
+        weight = (-B)**alpha_B * (-J)**alpha_J * (-H)**alpha_H * (-K)**alpha_K #power law weights
+    elif weighting_mode=='lum':
+        lum_B = np.power(10.0, -0.4*B) #not equals to the luminosity, constant prefactor is neglected becase we normalize the whole thing at the end
+        lum_J = np.power(10.0, -0.4*J)
+        lum_H = np.power(10.0, -0.4*H)
+        lum_K = np.power(10.0, -0.4*K)
+        weight = (lum_B)**alpha_B * (lum_J)**alpha_J * (lum_H)**alpha_H * (lum_K)**alpha_K
     #print weight
     val = weight*np.exp(-angle**2/(2*Dphi**2))/np.sqrt(2*np.pi*Dphi**4) #^4 instead of ^2 because it is multivariate
     #print val
