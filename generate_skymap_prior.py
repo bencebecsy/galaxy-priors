@@ -122,8 +122,9 @@ for i in range(ra.size): #maybe do this in numpy as well
     J = j[i] - DM
     H = h[i] - DM
     K = k[i] - DM
-    pixels_vector = hp.pix2vec(NSIDE,range(hp.nside2npix(NSIDE)))
     gal_vector = hp.ang2vec(Theta, Phi)
+    pixels = hp.query_disc(NSIDE, gal_vector, 10*Dphi)
+    pixels_vector = hp.pix2vec(NSIDE,pixels)
     angle = np.arccos(np.dot(gal_vector,pixels_vector))    
     if weighting_mode=='mag':
         weight = (-B)**alpha_B * (-J)**alpha_J * (-H)**alpha_H * (-K)**alpha_K #power law weights
@@ -136,7 +137,7 @@ for i in range(ra.size): #maybe do this in numpy as well
     #print weight
     val = weight*np.exp(-angle**2/(2*Dphi**2))/np.sqrt(2*np.pi*Dphi**4) #^4 instead of ^2 because it is multivariate
     #print val
-    m += val
+    m[pixels] += val
     sum_pix += np.sum(val)
     if i%1000==0:
         print i
