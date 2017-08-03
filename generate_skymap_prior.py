@@ -13,11 +13,11 @@ import matplotlib.pyplot as plt
 from timeit import default_timer as timer
 import sys
 
-infile, outfile = sys.argv[1:3]
+infile = sys.argv[1]
 
 start = timer()
 
-NSIDE = int(sys.argv[3])
+NSIDE = int(sys.argv[2])
 DPI = 100
 print "Number of pixels used: %d" %hp.nside2npix(NSIDE)
 
@@ -152,6 +152,10 @@ print "Normalization: %r" %(np.sum(m)*4*np.pi/hp.nside2npix(NSIDE))
 #-------------------------------------------------------------------------------
 #saving
 #-------------------------------------------------------------------------------
+min_dist=0.0
+max_dist=200.0
+
+outfile = "gx_prior_%.1f-%.1fMpc_NSIDE%d_w-%sB%.1fJ%.1fH%.1fK%.1f.fits"%(min_dist,max_dist,NSIDE,weighting_mode,alpha_B,alpha_J,alpha_H,alpha_K)
 hp.write_map(outfile,m)
 
 end = timer()
