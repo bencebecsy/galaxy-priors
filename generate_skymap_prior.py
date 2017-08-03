@@ -58,51 +58,37 @@ print "Number of galaxies: %d"%dist.size
 #filtering the catalog
 #-------------------------------------------------------------------------------
 #distance>0 (maybe we should exclude very closeby ones as well)
-"""
-dist_min = 0.0
-ra_filt = ra[dist>dist_min]
-dec_filt = dec[dist>dist_min]
-dist_filt = dist[dist>dist_min]
-dphi_filt = dphi[dist>dist_min]
-b_filt = b[dist>dist_min]
-j_filt = j[dist>dist_min]
-h_filt = h[dist>dist_min]
-k_filt = k[dist>dist_min]
+min_dist=0.0
+max_dist=200.0
 
-#distance<25 Mpc
-dist_max = 50.0
-ra_filt2 = ra_filt[dist_filt<dist_max]
-dec_filt2 = dec_filt[dist_filt<dist_max]
-dist_filt2 = dist_filt[dist_filt<dist_max]
-dphi_filt2 = dphi_filt[dist_filt<dist_max]
-b_filt2 = b_filt[dist_filt<dist_max]
-j_filt2 = j_filt[dist_filt<dist_max]
-h_filt2 = h_filt[dist_filt<dist_max]
-k_filt2 = k_filt[dist_filt<dist_max]
 
-#B magnitude != nan
+ra_filt = ra[dist>min_dist]
+dec_filt = dec[dist>min_dist]
+dist_filt = dist[dist>min_dist]
+dphi_filt = dphi[dist>min_dist]
+b_filt = b[dist>min_dist]
+j_filt = j[dist>min_dist]
+h_filt = h[dist>min_dist]
+k_filt = k[dist>min_dist]
 
-ra_filt3 = ra_filt2[~np.isnan(b_filt2)]
-dec_filt3 = dec_filt2[~np.isnan(b_filt2)]
-dist_filt3 = dist_filt2[~np.isnan(b_filt2)]
-dphi_filt3 = dphi_filt2[~np.isnan(b_filt2)]
-b_filt3 = b_filt2[~np.isnan(b_filt2)]
-j_filt3 = j_filt2[~np.isnan(b_filt2)]
-h_filt3 = h_filt2[~np.isnan(b_filt2)]
-k_filt3 = k_filt2[~np.isnan(b_filt2)]
+ra_filt2 = ra_filt[dist_filt<max_dist]
+dec_filt2 = dec_filt[dist_filt<max_dist]
+dist_filt2 = dist_filt[dist_filt<max_dist]
+dphi_filt2 = dphi_filt[dist_filt<max_dist]
+b_filt2 = b_filt[dist_filt<max_dist]
+j_filt2 = j_filt[dist_filt<max_dist]
+h_filt2 = h_filt[dist_filt<max_dist]
+k_filt2 = k_filt[dist_filt<max_dist]
 
-#finalize
-ra = ra_filt3
-dec = dec_filt3
-dist = dist_filt3
-dphi = dphi_filt3
-b = b_filt3
-j = j_filt3
-h = h_filt3
-k = k_filt3
-"""
+ra = ra_filt2
+dec = dec_filt2
+dist = dist_filt2
+dphi = dphi_filt2
+b = b_filt2
+j = j_filt2
+h = h_filt2
+k = k_filt2
 
-#print dist.size
 #-------------------------------------------------------------------------------
 #add galaxies to the map
 #-------------------------------------------------------------------------------
@@ -148,9 +134,6 @@ print "Normalization: %r" %(np.sum(m)*4*np.pi/hp.nside2npix(NSIDE))
 #-------------------------------------------------------------------------------
 #saving
 #-------------------------------------------------------------------------------
-min_dist=0.0
-max_dist=200.0
-
 outfile = "gx_prior_%.1f-%.1fMpc_NSIDE%d_w-%sB%.1fJ%.1fH%.1fK%.1f.fits"%(min_dist,max_dist,NSIDE,weighting_mode,alpha_B,alpha_J,alpha_H,alpha_K)
 hp.write_map(outfile,m)
 
