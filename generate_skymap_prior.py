@@ -24,16 +24,12 @@ print "Number of pixels used: %d" %hp.nside2npix(NSIDE)
 #-------------------------------------------------------------------------------
 #specify magnitude weight exponents
 #-------------------------------------------------------------------------------
-config_file = "weighting.conf"
-
-with open(config_file) as cf:
-    line = cf.readline().split()
-    weighting_mode = line[0]
-    alpha_B = float(line[1])
-    alpha_J = float(line[2])
-    alpha_H = float(line[3])
-    alpha_K = float(line[4])
-    print "Using weighting mode %s with B J H K exponents of %f %f %f %f."%(weighting_mode, alpha_B, alpha_J, alpha_H, alpha_K)
+weighting_mode = sys.argv[3]
+alpha_B = float(sys.argv[4])
+alpha_J = float(sys.argv[5])
+alpha_H = float(sys.argv[6])
+alpha_K = float(sys.argv[7])
+print "Using weighting mode %s with B J H K exponents of %f %f %f %f."%(weighting_mode, alpha_B, alpha_J, alpha_H, alpha_K)
 
 #somehow we should try to write all info about our prior into the header of the fits file
 
