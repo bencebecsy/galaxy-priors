@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 
 infile = sys.argv[1]
-outfile = infile[:-4] + "png"
+outfile = infile[:-5] + ".png"
 print outfile
 
 DPI=300
